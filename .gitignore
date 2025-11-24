@@ -1,0 +1,40 @@
+# --- Build directories ---
+build/
+out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Testing/
+*.vcxproj*
+*.sln
+
+# --- Visual Studio / VS Code ---
+.vscode/
+.vs/
+*.filters
+*.user
+
+# --- OS / Misc ---
+Thumbs.db
+*.db
+
+# --- C++ compiled / intermediate files ---
+*.exe
+*.dll
+*.lib
+*.pdb
+*.obj
+*.o
+*.out
+*.log
+*.tlog
+
+# --- CMake API junk (VS, CLion, etc) ---
+**/.cmake/
+
+# --- IDEs ---
+.idea/
+
+# --- Temporary files ---
+*.tmp
+*.cache
