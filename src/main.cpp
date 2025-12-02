@@ -1,36 +1,24 @@
 #include <iostream>
 #include <chrono>
-#include <string>
-#include <mutex>
-#include <thread>
 #include "ThreadPool.h"
 
-std::mutex printMtx;
-
-void safePrint(const std::string& msg) {
-    std::lock_guard<std::mutex> lock(printMtx);
-    std::cout << msg << std::endl;
-}
-
 int main() {
-    safePrint("--- Main: Starting ThreadPool with 4 threads ---");
-
     ThreadPool pool(4);
 
-    for (int i = 1; i <= 8; ++i) {
-        pool.enqueue([i] {
-            safePrint("Task " + std::to_string(i) + " started working...");
+    auto future1 = pool.enqueue([](int x) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        return x * x;
+        }, 10);
 
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+    auto future2 = pool.enqueue([] {
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        return std::string("Hello from ThreadPool!");
+        });
 
-            safePrint("Task " + std::to_string(i) + " DONE.");
-            });
-    }
+    std::cout << "Waiting for results..." << std::endl;
 
-    safePrint("--- Main: All tasks submitted. Waiting a bit... ---");
+    std::cout << "Result 1: " << future1.get() << std::endl;
+    std::cout << "Result 2: " << future2.get() << std::endl;
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-
-    safePrint("--- Main: Exiting (Destructor will clean up) ---");
     return 0;
 }
